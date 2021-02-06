@@ -15,6 +15,9 @@ function changeDialValue (index, incrementBy) {
   // this will be called with arguments (0, 1) indicating we should raise the first dial's value by one
   // for example, if the user clicked the "down" arrow for the last wheel
   // this will be called with arguments (3, -1).
+  if (!(lockState.wheels[index] === 0 && incrementBy < 0)) { // make sure you cannot have negative lock combo
+    lockState.wheels[index] += incrementBy
+  }
 
   // to change the state of the lock, simply make a call like
   // lockState.locked = false
@@ -25,6 +28,17 @@ function changeDialValue (index, incrementBy) {
   // call the redirect() function with your name
   // eg: redirect('larry-lobster')
   // the redirect function will only redirect if the lockState is unlocked
+  if (isCorrectCombo(lockState.wheels, SECRET_COMBO)) {
+    lockState.locked = false
+    redirect('halil-ibrahim')
+  }
+}
+
+function isCorrectCombo (currentCombo, lockCombo) {
+  for (let i = 0; i < currentCombo.length; i++) {
+    if (currentCombo[i] !== lockCombo[i]) return false
+  }
+  return true
 }
 
 // let our other modules find our functions
